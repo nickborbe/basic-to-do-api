@@ -11,7 +11,7 @@ const taskSchema = new Schema({
   doneyet: Boolean,
   owner: {type: Schema.Types.ObjectId, ref: 'User'}
 
-});
+}, {timestamps: true});
 
 const Task = mongoose.model("Task", taskSchema);
 

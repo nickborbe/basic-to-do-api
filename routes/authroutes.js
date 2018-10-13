@@ -10,22 +10,25 @@ const User       = require('../models/user');
 
 
 authRoutes.post('/signup', (req, res, next) => {
+  console.log(req.body)
+
+
     const username = req.body.username;
     const password = req.body.password;
   
     if (!username || !password) {
-      res.status(400).json({ message: 'Provide username and password' });
+      res.json({ message: 'Provide username and password' });
       return;
     }
 
     if(password.length < 7){
-        res.status(400).json({ message: 'Please make your password at least 7 characters long for secutiry purposes.' });
+        res.json({ message: 'Please make your password at least 7 characters long for secutiry purposes.' });
         return;
     }
   
-    User.findOne({ username }, '_id', (err, foundUser) => {
+    User.findOne({ username:username }, '_id', (err, foundUser) => {
       if (foundUser) {
-        res.status(400).json({ message: 'The username already exists' });
+        res.json({ message: 'The username already exists' });
         return;
       }
   
@@ -39,13 +42,13 @@ authRoutes.post('/signup', (req, res, next) => {
   
       theUser.save((err) => {
         if (err) {
-          res.status(400).json({ message: 'Something went wrong saving user to Database' });
+          res.json({ message: 'Something went wrong saving user to Database' });
           return;
         }
   
         req.login(theUser, (err) => {
           if (err) {
-            res.status(500).json({ message: 'Something went wrong' });
+            res.json({ message: 'Something went wrong with automatic login after signup' });
             return;
           }
   
@@ -60,18 +63,18 @@ authRoutes.post('/signup', (req, res, next) => {
     authRoutes.post('/login', (req, res, next) => {
         passport.authenticate('local', (err, theUser, failureDetails) => {
           if (err) {
-            res.status(500).json({ message: 'Something went wrong authenticating user' });
+            res.json({ message: 'Something went wrong authenticating user' });
             return;
           }
       
           if (!theUser) {
-            res.status(401).json(failureDetails);
+            res.json({message: "sorry, we coun't find that account"});
             return;
           }
       
           req.login(theUser, (err) => {
             if (err) {
-              res.status(500).json({ message: 'Something went wrong' });
+              res.json({ message: 'Something went wrong logging in' });
               return;
             }
       
@@ -85,7 +88,7 @@ authRoutes.post('/signup', (req, res, next) => {
 
       authRoutes.post('/logout', (req, res, next) => {
         req.logout();
-        res.status(200).json({ message: 'Success' });
+        res.json({ message: 'Success' });
       });
 
    

@@ -19,7 +19,7 @@ require('./config/passport');
 
 mongoose.Promise = Promise;
 mongoose
-  .connect(process.env.MONGODB_URI, {useMongoClient: true})
+  .connect('mongodb://localhost/blah-the-to-do-list', {useMongoClient: true})
   .then(() => {
     console.log('Connected to Mongo!')
   }).catch(err => {

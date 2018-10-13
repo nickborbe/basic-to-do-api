@@ -4,7 +4,7 @@ const Task    = require('../models/task');
 
 
 router.get('/tasks', (req, res, next) => {
-    Task.find()
+    Task.find().sort({createdAt: -1})
     .then((allTheTasks)=>{
         res.json(allTheTasks);
     })
@@ -20,7 +20,6 @@ router.post('/tasks/create', (req, res, next)=>{
     Task.create({
         title: req.body.title,
         description: req.body.description,
-        doneyet: req.body.doneyet,
         owner: req.user._id,
     })
     .then((response)=>{
