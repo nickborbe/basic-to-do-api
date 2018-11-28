@@ -31,6 +31,9 @@ router.post('/tasks/create', (req, res, next)=>{
 })
 
 router.post('/tasks/edit/:id', (req, res, next)=>{
+    if(!req.user){
+        return res.json({message: 'sorry, you must be logged in to update a task'})
+    }
     Task.findByIdAndUpdate(req.params.id, req.body)
     .then((response)=>{
         res.json(response)
@@ -41,6 +44,9 @@ router.post('/tasks/edit/:id', (req, res, next)=>{
 })
 
 router.post('/tasks/delete/:id', (req, res, next)=>{
+    if(!req.user){
+        return res.json({message: 'sorry, you must be logged in to update a task'})
+    }
     Task.findByIdAndRemove(req.params.id)
     .then((response)=>{
         res.json(response)
